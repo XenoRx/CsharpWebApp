@@ -1,4 +1,3 @@
-
 namespace Market
 {
     public class Program
@@ -26,7 +25,6 @@ namespace Market
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
