@@ -1,4 +1,6 @@
-﻿using Market.Models;
+﻿using Market.Abstraction;
+using Market.Models;
+using Market.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Market.Controllers
@@ -7,54 +9,26 @@ namespace Market.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
+        private readonly IProductRepository _productRepository;
+
+        public ProductController(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
+        [HttpPost("addProduct")]
+        public IActionResult addProducts([FromBody] DTOProduct product)
+        {
+            var result = _productRepository.AddProduct(product);
+
+            return Ok(result);
+        }
+
         [HttpGet("getProduct")]
         public IActionResult GetProducts()
         {
-            try
-            {
-                using (var context = new ProductContext())
-                {
-                    var products = context.Products.Select(x => new Product()
-                    {
-                        ProductId = x.ProductId,
-                        Name = x.Name,
-                        Description = x.Description,
-                    });
-                    return Ok(products);
-                }
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
-        }
-        [HttpPost("addProduct")]
-        public IActionResult addProducts([FromQuery] string name, string description, int categoryId, int cost)
-        {
-            try
-            {
-                using (var context = new ProductContext())
-                {
-                    if (!context.Products.Any(x => x.Name.ToLower().Equals(name)))
-                    {
-                        context.Add(new Product()
-                        {
-                            Name = name,
-                            Description = description,
-                            Cost = cost,
-                            CategoryID = categoryId
-                        });
-                        context.SaveChanges();
-                        return Ok();
-                    }
-                    return StatusCode(409);
-
-                }
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
+            var products = _productRepository.GetProducts();
+            return Ok(products);
         }
 
         [HttpDelete("deleteProduct")]
@@ -109,6 +83,30 @@ namespace Market.Controllers
                 return StatusCode(500);
             }
         }
+
+        [HttpGet("GetProductsCSV")]
+        public FileContentResult GetCSV()
+        {
+            var content = _productRepository.GetProductsCSV();
+
+            return File(new System.Text.UTF8Encoding().GetBytes(content), "text/csv", "Products.csv");
+        }
+
+        [HttpGet("GetCacheCSVUrl")]
+        public ActionResult<string> GetCacheCSVUrl()
+        {
+            var result = _productRepository.GetCacheStatCSV();
+
+            if (result is not null)
+            {
+                var fileName = $"products{DateTime.Now.ToBinary()}.csv";
+
+                System.IO.File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles", fileName), result);
+
+                return "https://" + Request.Host.ToString() + "/static/" + fileName;
+            }
+
+            return StatusCode(500);
+        }
     }
 }
-

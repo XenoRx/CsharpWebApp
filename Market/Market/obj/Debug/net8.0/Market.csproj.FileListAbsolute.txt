@@ -174,3 +174,9 @@ C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\runtimes\win-x64\native\gssapi6
 C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\runtimes\win-x64\native\k5sprt64.dll
 C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\runtimes\win-x64\native\krb5_64.dll
 C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\runtimes\win-x64\native\krbcc64.dll
+C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\Autofac.dll
+C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\Autofac.Extensions.DependencyInjection.dll
+C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\AutoMapper.dll
+C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\Castle.Core.dll
+C:\c#proj\AspBase\Market\Market\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Proxies.dll
